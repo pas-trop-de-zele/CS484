@@ -34,8 +34,8 @@ def nearest_intersected_object(objects, ray_origin, ray_direction):
     return nearest_object, min_distance
 
 
-width = 400
-height = 400
+width = 1000
+height = 600
 
 max_depth = 3
 
@@ -43,24 +43,62 @@ camera = np.array([0, 0, 1])
 ratio = float(width) / height
 screen = (-1, 1 / ratio, 1, -1 / ratio)  # left, top, right, bottom
 
-light = {'position': np.array([5, 5, 5]), 'ambient': np.array(
+light = {'position': np.array([5,5,5]), 'ambient': np.array(
     [1, 1, 1]), 'diffuse': np.array([1, 1, 1]), 'specular': np.array([1, 1, 1])}
 
+
+SMALL_BALLS_RADIUS = 0.03
+FRONT_DEPTH = 0
 objects = [
-    {'center': np.array([-0.2, 0, -1]), 'radius': 0.7, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
-        [0.7, 0, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5},
-    {'center': np.array([0.1, -0.3, 0]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0.1]), 'diffuse': np.array(
-        [0.7, 0, 0.7]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5},
-    {'center': np.array([-0.3, 0, 0]), 'radius': 0.15, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
-        [0, 0.6, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5},
-    {'center': np.array([0.5, 0, 0.1]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
-        [0.7, 0, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5},
-    {'center': np.array([-0.5, 0, 0.2]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
-        [0.7, 0, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5},
-    {'center': np.array([0, 0.5, 0.3]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
-        [0.7, 0, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5},
-    {'center': np.array([0, -0.5, 0.4]), 'radius': 0.1, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
-        [0.7, 0, 0]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5},
+    {'center': np.array([-0.4, 0, -1]), 'radius': 0.5, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [0.8,0,0.9]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+
+    # horizontal line
+    {'center': np.array([-0.4, -0.4, FRONT_DEPTH]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([-0.2, -0.4, FRONT_DEPTH]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0, -0.4, FRONT_DEPTH]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.2, -0.4, FRONT_DEPTH]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.4, FRONT_DEPTH]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+
+    # vertcial line
+    {'center': np.array([0.4, -0.4, FRONT_DEPTH]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.2, FRONT_DEPTH]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, 0, FRONT_DEPTH]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, 0.2, FRONT_DEPTH]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, 0.4, FRONT_DEPTH]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    
+    # depth line
+    {'center': np.array([0.4, -0.4, -1.8]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.4, -1.6]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.4, -1.4]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.4, -1.2]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.4, -1]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.4, -0.8]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.4, -0.6]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.4, -0.4]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.4, -0.2]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    {'center': np.array([0.4, -0.4, 0.0]), 'radius': SMALL_BALLS_RADIUS, 'ambient': np.array([0.1, 0, 0]), 'diffuse': np.array(
+        [1,1,0.1]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 2},
+    # ground
     {'center': np.array([0, -9000, 0]), 'radius': 9000 - 0.7, 'ambient': np.array([0.1, 0.1, 0.1]),
      'diffuse': np.array([0.6, 0.6, 0.6]), 'specular': np.array([1, 1, 1]), 'shininess': 100, 'reflection': 0.5}
 ]
@@ -122,6 +160,6 @@ for i, y in enumerate(np.linspace(screen[1], screen[3], height)):
             direction = reflected(direction, normal_to_surface)
 
         image[i, j] = np.clip(color, 0, 1)
-    # print("%d/%d" % (i + 1, height))
+    print("%d/%d" % (i + 1, height))
 
 plt.imsave('image.png', image)
